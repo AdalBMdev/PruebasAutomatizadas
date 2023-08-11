@@ -1,0 +1,171 @@
+using System;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Edge;
+using System.Threading;
+
+namespace SpotifyAutomation
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            EdgeOptions options = new EdgeOptions();
+            IWebDriver driver = new EdgeDriver(options);
+
+            driver.Manage().Window.Maximize();
+
+            driver.Navigate().GoToUrl("https://www.spotify.com");
+
+            PerformLogin(driver);
+
+            SearchSong(driver, "Self Care");
+
+            PlaySong(driver);
+
+            Thread.Sleep(TimeSpan.FromSeconds(5)); 
+
+            PauseSong(driver);
+
+            Thread.Sleep(TimeSpan.FromSeconds(5)); 
+
+            SkipNextSong(driver);
+
+            Thread.Sleep(TimeSpan.FromSeconds(5)); 
+
+            SkipPreviousSong(driver);
+
+            PerformLogout(driver);
+
+            driver.Quit();
+        }
+
+        static void PerformLogin(IWebDriver driver)
+        {
+
+            Screenshot screenshotButtonVisible = ((ITakesScreenshot)driver).GetScreenshot();
+            screenshotButtonVisible.SaveAsFile("screenshotButtonVisible.png", ScreenshotImageFormat.Png);
+
+            IWebElement iniciarSesionButton = driver.FindElement(By.XPath("//button[contains(@data-testid, 'login-button')]"));
+            iniciarSesionButton.Click();
+
+            Thread.Sleep(TimeSpan.FromSeconds(5));
+
+            Screenshot screenshotFormVisible = ((ITakesScreenshot)driver).GetScreenshot();
+            screenshotFormVisible.SaveAsFile("screenshotFormVisible.png", ScreenshotImageFormat.Png);
+
+            IWebElement correoInput = driver.FindElement(By.Id("login-username"));
+
+            correoInput.SendKeys("20220791@itla.edu.do");
+
+            IWebElement contrasenaInput = driver.FindElement(By.Id("login-password"));
+
+            contrasenaInput.SendKeys("1234567");
+
+            IWebElement loginButton = driver.FindElement(By.Id("login-button"));
+            loginButton.Click();
+
+            Thread.Sleep(TimeSpan.FromSeconds(5));
+
+            Screenshot screenshotLobbyIncorrect = ((ITakesScreenshot)driver).GetScreenshot();
+            screenshotLobbyIncorrect.SaveAsFile("screenshot_lobby_incorrect.png", ScreenshotImageFormat.Png);
+
+            contrasenaInput.Clear();
+
+            contrasenaInput.SendKeys("pruebaautomatizada");
+
+            loginButton = driver.FindElement(By.Id("login-button"));
+            loginButton.Click();
+
+            Thread.Sleep(TimeSpan.FromSeconds(5));
+
+            Screenshot screenshotLobby = ((ITakesScreenshot)driver).GetScreenshot();
+            screenshotLobby.SaveAsFile("screenshot_lobby.png", ScreenshotImageFormat.Png);
+        }
+
+        static void PerformLogout(IWebDriver driver)
+        {
+
+            Screenshot screenshotIconProfile = ((ITakesScreenshot)driver).GetScreenshot();
+            screenshotIconProfile.SaveAsFile("screenshotIconProfile.png", ScreenshotImageFormat.Png);
+
+            IWebElement menuButton = driver.FindElement(By.CssSelector("button[data-testid='user-widget-link']"));
+            menuButton.Click();
+
+            Screenshot screenshotMenu = ((ITakesScreenshot)driver).GetScreenshot();
+            screenshotMenu.SaveAsFile("screenshotMenu.png", ScreenshotImageFormat.Png);
+
+            Thread.Sleep(TimeSpan.FromSeconds(2));
+
+            IWebElement logoutButton = driver.FindElement(By.CssSelector("button[data-testid='user-widget-dropdown-logout']"));
+            logoutButton.Click();
+
+            Thread.Sleep(TimeSpan.FromSeconds(5));
+
+            Screenshot screenshotLogout = ((ITakesScreenshot)driver).GetScreenshot();
+            screenshotLogout.SaveAsFile("screenshotLogout.png", ScreenshotImageFormat.Png);
+
+        }
+
+        static void SearchSong(IWebDriver driver, string songName)
+        {
+
+            Screenshot screenshotSearch = ((ITakesScreenshot)driver).GetScreenshot();
+            screenshotSearch.SaveAsFile("screenshotSearch.png", ScreenshotImageFormat.Png);
+
+            IWebElement searchButton = driver.FindElement(By.CssSelector("a[aria-label='Buscar']"));
+            searchButton.Click();
+
+            Thread.Sleep(TimeSpan.FromSeconds(2));
+
+            IWebElement searchInput = driver.FindElement(By.CssSelector("input[data-testid='search-input']"));
+
+            searchInput.SendKeys(songName);
+
+            Screenshot screenshotSearchInput = ((ITakesScreenshot)driver).GetScreenshot();
+            screenshotSearchInput.SaveAsFile("screenshotSearchInput.png", ScreenshotImageFormat.Png);
+
+            searchInput.SendKeys(Keys.Enter);
+
+            Thread.Sleep(TimeSpan.FromSeconds(2));
+
+            Screenshot screenshotSearchResult = ((ITakesScreenshot)driver).GetScreenshot();
+            screenshotSearchResult.SaveAsFile("screenshotSearchResult.png", ScreenshotImageFormat.Png);
+
+            Thread.Sleep(TimeSpan.FromSeconds(5));
+        }
+
+        static void PlaySong(IWebDriver driver)
+        {
+            // Encontrar y hacer clic en el botón de reproducir
+            IWebElement playButton = driver.FindElement(By.CssSelector("button[aria-label='Reproducir'][data-testid='control-button-playpause']"));
+            playButton.Click();
+
+            // Esperar 2 segundos
+            Thread.Sleep(TimeSpan.FromSeconds(2));
+        }
+
+
+
+        static void PauseSong(IWebDriver driver)
+        {
+            // Encontrar y hacer clic en el botón de pausar
+            IWebElement pauseButton = driver.FindElement(By.CssSelector("button[aria-label='Pausar']"));
+            pauseButton.Click();
+        }
+
+        static void SkipNextSong(IWebDriver driver)
+        {
+            // Encontrar y hacer clic en el botón de siguiente canción
+            IWebElement nextButton = driver.FindElement(By.CssSelector("button[data-testid='control-button-skip-forward']"));
+            nextButton.Click();
+        }
+
+        static void SkipPreviousSong(IWebDriver driver)
+        {
+            // Encontrar y hacer clic en el botón de canción anterior
+            IWebElement previousButton = driver.FindElement(By.CssSelector("button[data-testid='control-button-skip-back']"));
+            previousButton.Click();
+            previousButton.Click();
+        }
+    }
+}
