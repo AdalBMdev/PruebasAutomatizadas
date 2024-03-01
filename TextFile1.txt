@@ -3,6 +3,8 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Edge;
 using System.Threading;
 
+//aaaa
+
 namespace SpotifyAutomation
 {
     class Program
@@ -136,7 +138,7 @@ namespace SpotifyAutomation
 
         static void PlaySong(IWebDriver driver)
         {
-            // Encontrar y hacer clic en el botón de reproducir
+            // Encontrar y hacer clic en el botï¿½n de reproducir
             IWebElement playButton = driver.FindElement(By.CssSelector("button[aria-label='Reproducir'][data-testid='control-button-playpause']"));
             playButton.Click();
 
@@ -148,21 +150,21 @@ namespace SpotifyAutomation
 
         static void PauseSong(IWebDriver driver)
         {
-            // Encontrar y hacer clic en el botón de pausar
+            // Encontrar y hacer clic en el botï¿½n de pausar
             IWebElement pauseButton = driver.FindElement(By.CssSelector("button[aria-label='Pausar']"));
             pauseButton.Click();
         }
 
         static void SkipNextSong(IWebDriver driver)
         {
-            // Encontrar y hacer clic en el botón de siguiente canción
+            // Encontrar y hacer clic en el botï¿½n de siguiente canciï¿½n
             IWebElement nextButton = driver.FindElement(By.CssSelector("button[data-testid='control-button-skip-forward']"));
             nextButton.Click();
         }
 
         static void SkipPreviousSong(IWebDriver driver)
         {
-            // Encontrar y hacer clic en el botón de canción anterior
+            // Encontrar y hacer clic en el botï¿½n de canciï¿½n anterior
             IWebElement previousButton = driver.FindElement(By.CssSelector("button[data-testid='control-button-skip-back']"));
             previousButton.Click();
             previousButton.Click();
